@@ -1,9 +1,9 @@
 /*
  * @creater: panan
- * @message: 单页面应用改造版本 - 集成所有工具模块
+ * @message: 单页面应用改造版本 - 集成所有工具模块和 AI 聊天
  * @since: 2024-05-29 17:00:15
  * @LastAuthor: panan panan2001@outlook.com
- * @lastTime: 2026-03-03 14:30:00
+ * @lastTime: 2026-03-03 15:30:00
  * @文件相对于项目的路径: /pan-umi/src/pages/Home/index.tsx
  */
 import { PageContainer } from '@ant-design/pro-components';
@@ -14,14 +14,15 @@ import { Card, Tabs, Space, Button } from 'antd';
 import { useModel } from '@umijs/max';
 import { trim } from '@/utils/format';
 import Guide from '@/components/Guide';
+import ChatPage from '../Chat';
 
 /**
  * 单页面应用首页组件
- * 功能：通过 Tabs 组件集成所有工具模块，避免页面跳转
+ * 功能：通过 Tabs 组件集成所有工具模块和 AI 聊天，避免页面跳转
  */
 const HomePage: React.FC = () => {
   const [dataSource, setDataSource] = useState<any[]>([]);
-  const [activeTab, setActiveTab] = useState<string>('tools');
+  const [activeTab, setActiveTab] = useState<string>('chat');
   const { name, setName } = useModel('global');
   const { initialState, setInitialState }: any = useModel('@@initialState');
 
@@ -77,8 +78,13 @@ const HomePage: React.FC = () => {
    */
   const tabItems = [
     {
+      key: 'chat',
+      label: '💬 AI 聊天',
+      children: <ChatPage />,
+    },
+    {
       key: 'tools',
-      label: '工具中心',
+      label: '🛠 工具中心',
       children: (
         <div className={styles.cardContainer}>
           {dataSource.map((item) => (
@@ -98,7 +104,7 @@ const HomePage: React.FC = () => {
     },
     {
       key: 'access-demo',
-      label: '权限演示',
+      label: '🔐 权限演示',
       children: (
         <div className={styles.accessContainer}>
           <Space direction="vertical" style={{ width: '100%' }}>

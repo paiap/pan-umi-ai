@@ -1,0 +1,136 @@
+/**
+ * 配置模态框样式
+ */
+
+.configModal {
+  :global {
+    .ant-modal-content {
+      background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+      border: 1px solid rgba(100, 200, 255, 0.2);
+    }
+
+    .ant-modal-header {
+      background: rgba(100, 200, 255, 0.1);
+      border-bottom: 1px solid rgba(100, 200, 255, 0.2);
+    }
+
+    .ant-modal-title {
+      color: #64c8ff;
+      font-weight: 600;
+    }
+
+    .ant-modal-close-x {
+      color: #64c8ff;
+    }
+
+    .ant-alert {
+      background: rgba(100, 200, 255, 0.1);
+      border-color: rgba(100, 200, 255, 0.2);
+      color: #64c8ff;
+    }
+
+    .ant-form-item-label > label {
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .ant-input,
+    .ant-input-password {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border: 1px solid rgba(100, 200, 255, 0.2) !important;
+      color: #fff !important;
+
+      &:focus,
+      &:hover {
+        background: rgba(255, 255, 255, 0.08) !important;
+        border-color: rgba(100, 200, 255, 0.5) !important;
+      }
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.3) !important;
+      }
+    }
+
+    .ant-input-affix-wrapper {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border: 1px solid rgba(100, 200, 255, 0.2) !important;
+
+      &:focus-within {
+        background: rgba(255, 255, 255, 0.08) !important;
+        border-color: rgba(100, 200, 255, 0.5) !important;
+      }
+    }
+
+    .ant-btn-primary {
+      background: linear-gradient(90deg, #64c8ff 0%, #9664ff 100%);
+      border: none;
+
+      &:hover {
+        box-shadow: 0 0 20px rgba(100, 200, 255, 0.4);
+      }
+    }
+
+    .ant-btn-default {
+      color: #64c8ff;
+      border-color: rgba(100, 200, 255, 0.3);
+
+      &:hover {
+        color: #9664ff;
+        border-color: rgba(150, 100, 255, 0.5);
+      }
+    }
+  }
+}
+
+.configForm {
+  margin: 20px 0;
+}
+
+.input {
+  &:global(.ant-input),
+  &:global(.ant-input-password) {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(100, 200, 255, 0.2) !important;
+    color: #fff !important;
+    border-radius: 6px;
+
+    &:focus,
+    &:hover {
+      background: rgba(255, 255, 255, 0.08) !important;
+      border-color: rgba(100, 200, 255, 0.5) !important;
+      box-shadow: 0 0 12px rgba(100, 200, 255, 0.2) !important;
+    }
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.3) !important;
+    }
+  }
+}
+
+.tips {
+  margin-top: 20px;
+  padding: 12px;
+  background: rgba(100, 200, 255, 0.05);
+  border: 1px solid rgba(100, 200, 255, 0.1);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+
+  h4 {
+    margin: 0 0 8px 0;
+    color: #64c8ff;
+    font-weight: 600;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 20px;
+
+    li {
+      margin: 4px 0;
+
+      strong {
+        color: #9664ff;
+      }
+    }
+  }
+}
