@@ -3,7 +3,7 @@
  * @message: API 配置模态框组件
  * @since: 2026-03-03
  * @LastAuthor: panan panan2001@outlook.com
- * @lastTime: 2026-03-03 16:30:00
+ * @lastTime: 2026-03-03 17:00:00
  * @文件相对于项目的路径: /pan-umi/src/pages/Chat/components/ConfigModal.tsx
  */
 import { Modal, Form, Input, Button, Space, message, Alert } from 'antd';
@@ -16,8 +16,8 @@ import styles from './ConfigModal.less';
 interface ConfigModalProps {
   visible: boolean;
   onClose: () => void;
-  onSave: (baseUrl: string, apiKey: string) => void;
-  initialConfig: { baseUrl: string; apiKey: string };
+  onSave: (baseUrl: string, apiKey: string, model: string) => void;
+  initialConfig: { baseUrl: string; apiKey: string; model?: string };
 }
 
 /**
@@ -36,7 +36,11 @@ const ConfigModal: React.FC<ConfigModalProps> = ({
    */
   useEffect(() => {
     if (visible) {
-      form.setFieldsValue(initialConfig);
+      form.setFieldsValue({
+        baseUrl: initialConfig.baseUrl,
+        apiKey: initialConfig.apiKey,
+        model: initialConfig.model || 'gpt-3.5-turbo',
+      });
     }
   }, [visible, initialConfig, form]);
 
@@ -46,7 +50,7 @@ const ConfigModal: React.FC<ConfigModalProps> = ({
   const handleSave = async () => {
     try {
       const values = await form.validateFields();
-      onSave(values.baseUrl, values.apiKey);
+      onSave(values.baseUrl, values.apiKey, values.model);
     } catch (error) {
       message.error('请填写所有必填项');
     }
@@ -63,7 +67,7 @@ const ConfigModal: React.FC<ConfigModalProps> = ({
     >
       <Alert
         message="支持多种 API 格式"
-        description="支持 OpenAI、Claude Code、智谱清言等所有兼容 Claude API 的服务。请输入您的完整 Base URL 和 API Key。"
+        description="支持 OpenAI、Claude Code、智谱清言等所有兼容 Claude API 的服务。请输入您的完整 Base URL、API Key 和模型名称。"
         type="info"
         showIcon
         style={{ marginBottom: 16 }}
@@ -108,6 +112,21 @@ const ConfigModal: React.FC<ConfigModalProps> = ({
           />
         </Form.Item>
 
+        <Form.Item
+          label="Model"
+          name="model"
+          rules={[
+            { required: true, message: '请输入模型名称' },
+            { min: 1, message: '模型名称不能为空' },
+          ]}
+          tooltip="输入您要使用的模型名称"
+        >
+          <Input
+            placeholder="例如：gpt-3.5-turbo, glm-4-flash, claude-3-5-sonnet"
+            className={styles.input}
+          />
+        </Form.Item>
+
         <Form.Item>
           <Space style={{ width: '100%', justifyContent: 'flex-end' }}>
             <Button onClick={onClose}>取消</Button>
@@ -119,23 +138,23 @@ const ConfigModal: React.FC<ConfigModalProps> = ({
       </Form>
 
       <div className={styles.tips}>
-        <h4>常见 API 地址示例：</h4>
+        <h4>常见配置示例：</h4>
         <ul>
           <li>
-            <strong>OpenAI:</strong> https://api.openai.com/v1
+            <strong>OpenAI:</strong> Base URL: https://api.openai.com/v1, Model: gpt-3.5-turbo
           </li>
           <li>
-            <strong>智谱清言:</strong> https://open.bigmodel.cn/api/anthropic
+            <strong>智谱清言:</strong> Base URL: https://open.bigmodel.cn/api/anthropic, Model: glm-4-flash
           </li>
           <li>
-            <strong>本地 Ollama:</strong> http://localhost:11434/v1
+            <strong>本地 Ollama:</strong> Base URL: http://localhost:11434/v1, Model: mistral
           </li>
           <li>
-            <strong>其他兼容服务:</strong> 输入您的完整 API 端点地址
+            <strong>Claude Code:</strong> Base URL: https://api.openai.com/v1, Model: claude-3-5-sonnet
           </li>
         </ul>
         <p style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '8px' }}>
-          💡 提示：系统会自动识别您的 Base URL 格式，无需手动添加 /chat/completions
+          💡 提示：不同的 API 服务使用不同的模型标识符，请根据您的 API 文档填写正确的模型名称
         </p>
       </div>
     </Modal>

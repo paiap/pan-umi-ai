@@ -3,16 +3,17 @@
  * @message: 存储工具函数 - 管理本地存储
  * @since: 2026-03-03
  * @LastAuthor: panan panan2001@outlook.com
- * @lastTime: 2026-03-03 15:00:00
+ * @lastTime: 2026-03-03 17:00:00
  * @文件相对于项目的路径: /pan-umi/src/pages/Chat/utils/storage.ts
  */
 
 /**
  * 配置类型定义
  */
-interface ChatConfig {
+export interface ChatConfig {
   baseUrl: string;
   apiKey: string;
+  model?: string;
 }
 
 /**

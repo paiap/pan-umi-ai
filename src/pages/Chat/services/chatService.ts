@@ -3,7 +3,7 @@
  * @message: 聊天服务 - 处理 API 请求
  * @since: 2026-03-03
  * @LastAuthor: panan panan2001@outlook.com
- * @lastTime: 2026-03-03 16:30:00
+ * @lastTime: 2026-03-03 17:00:00
  * @文件相对于项目的路径: /pan-umi/src/pages/Chat/services/chatService.ts
  */
 
@@ -69,13 +69,15 @@ const buildApiUrl = (baseUrl: string): string => {
  * @param messages 历史消息列表
  * @param baseUrl API Base URL
  * @param apiKey API Key
+ * @param model 模型名称
  * @returns AI 响应内容
  */
 export const getChatResponse = async (
   userMessage: string,
   messages: ChatMessage[],
   baseUrl: string,
-  apiKey: string
+  apiKey: string,
+  model: string
 ): Promise<string> => {
   try {
     // 构建完整的 API URL
@@ -94,7 +96,21 @@ export const getChatResponse = async (
     });
 
     console.log('API Request URL:', apiUrl);
+    console.log('Model:', model);
     console.log('Messages:', messageList);
+
+    // 构建请求体 - 只包含必需的字段
+    const requestBody: any = {
+      model: model,
+      messages: messageList,
+    };
+
+    // 添加可选参数（如果需要）
+    // 注意：不同的 API 可能支持不同的参数
+    requestBody.temperature = 0.7;
+    requestBody.max_tokens = 2000;
+
+    console.log('Request Body:', requestBody);
 
     // 调用 API
     const response = await fetch(apiUrl, {
@@ -103,15 +119,7 @@ export const getChatResponse = async (
         'Content-Type': 'application/json',
         Authorization: `Bearer ${apiKey}`,
       },
-      body: JSON.stringify({
-        model: 'claude-3-5-sonnet', // 默认使用 Claude 模型
-        messages: messageList,
-        temperature: 0.7,
-        max_tokens: 2000,
-        top_p: 1,
-        frequency_penalty: 0,
-        presence_penalty: 0,
-      }),
+      body: JSON.stringify(requestBody),
     });
 
     // 获取响应文本用于调试
@@ -137,6 +145,7 @@ export const getChatResponse = async (
     const assistantMessage =
       data.choices?.[0]?.message?.content ||
       data.content?.[0]?.text ||
+      data.result ||
       '无法获取响应';
 
     return assistantMessage;
@@ -152,11 +161,13 @@ export const getChatResponse = async (
  * 验证 API 配置
  * @param baseUrl API Base URL
  * @param apiKey API Key
+ * @param model 模型名称
  * @returns 验证结果
  */
 export const validateApiConfig = async (
   baseUrl: string,
-  apiKey: string
+  apiKey: string,
+  model: string
 ): Promise<{ valid: boolean; message: string }> => {
   try {
     const apiUrl = buildApiUrl(baseUrl);
@@ -169,7 +180,7 @@ export const validateApiConfig = async (
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'claude-3-5-sonnet',
+        model: model,
         messages: [{ role: 'user', content: 'test' }],
         max_tokens: 10,
       }),

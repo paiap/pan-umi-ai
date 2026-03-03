@@ -1,17 +1,17 @@
 /*
  * @creater: panan
- * @message: AI 聊天页面 - 支持自定义 BaseURL 和 APIKey
+ * @message: AI 聊天页面 - 支持自定义 BaseURL、APIKey 和 Model
  * @since: 2026-03-03
  * @LastAuthor: panan panan2001@outlook.com
- * @lastTime: 2026-03-03 16:00:00
+ * @lastTime: 2026-03-03 17:00:00
  * @文件相对于项目的路径: /pan-umi/src/pages/Chat/index.tsx
  */
 import { useEffect, useRef, useState } from 'react';
-import { Input, Button, Space, Drawer, Form, message, Spin, Empty, Alert } from 'antd';
+import { Input, Button, Space, Form, message, Spin, Empty, Alert } from 'antd';
 import { SendOutlined, SettingOutlined } from '@ant-design/icons';
 import styles from './index.less';
 import { getChatResponse } from './services/chatService';
-import { getStorageConfig, setStorageConfig } from './utils/storage';
+import { getStorageConfig, setStorageConfig, ChatConfig } from './utils/storage';
 import MessageList from './components/MessageList';
 import ConfigModal from './components/ConfigModal';
 
@@ -33,9 +33,10 @@ const ChatPage: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [configVisible, setConfigVisible] = useState<boolean>(false);
-  const [config, setConfig] = useState<{ baseUrl: string; apiKey: string }>({
+  const [config, setConfig] = useState<ChatConfig>({
     baseUrl: '',
     apiKey: '',
+    model: 'gpt-3.5-turbo',
   });
   const [errorMsg, setErrorMsg] = useState<string>('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -46,7 +47,11 @@ const ChatPage: React.FC = () => {
   useEffect(() => {
     const storedConfig = getStorageConfig();
     if (storedConfig) {
-      setConfig(storedConfig);
+      setConfig({
+        baseUrl: storedConfig.baseUrl,
+        apiKey: storedConfig.apiKey,
+        model: storedConfig.model || 'gpt-3.5-turbo',
+      });
     }
   }, []);
 
@@ -66,7 +71,7 @@ const ChatPage: React.FC = () => {
       return;
     }
 
-    if (!config.baseUrl || !config.apiKey) {
+    if (!config.baseUrl || !config.apiKey || !config.model) {
       message.error('请先配置 API 信息');
       setConfigVisible(true);
       return;
@@ -91,7 +96,8 @@ const ChatPage: React.FC = () => {
         inputValue,
         messages,
         config.baseUrl,
-        config.apiKey
+        config.apiKey,
+        config.model
       );
 
       // 创建助手消息
@@ -118,9 +124,10 @@ const ChatPage: React.FC = () => {
   /**
    * 处理配置保存
    */
-  const handleConfigSave = (baseUrl: string, apiKey: string) => {
-    setConfig({ baseUrl, apiKey });
-    setStorageConfig({ baseUrl, apiKey });
+  const handleConfigSave = (baseUrl: string, apiKey: string, model: string) => {
+    const newConfig: ChatConfig = { baseUrl, apiKey, model };
+    setConfig(newConfig);
+    setStorageConfig(newConfig);
     setConfigVisible(false);
     setErrorMsg('');
     message.success('配置已保存');
@@ -175,7 +182,7 @@ const ChatPage: React.FC = () => {
       <div className={styles.messagesArea}>
         {messages.length === 0 ? (
           <Empty
-            description={config.baseUrl && config.apiKey ? '开始一段对话吧' : '请先配置 API 信息'}
+            description={config.baseUrl && config.apiKey && config.model ? '开始一段对话吧' : '请先配置 API 信息'}
             style={{ marginTop: '100px' }}
           />
         ) : (
@@ -201,12 +208,12 @@ const ChatPage: React.FC = () => {
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={
-              config.baseUrl && config.apiKey
+              config.baseUrl && config.apiKey && config.model
                 ? '输入消息（Shift + Enter 换行，Enter 发送）'
                 : '请先配置 API 信息'
             }
             rows={3}
-            disabled={loading || !config.baseUrl || !config.apiKey}
+            disabled={loading || !config.baseUrl || !config.apiKey || !config.model}
             className={styles.input}
           />
         </Space.Compact>
@@ -217,7 +224,7 @@ const ChatPage: React.FC = () => {
               icon={<SendOutlined />}
               onClick={handleSendMessage}
               loading={loading}
-              disabled={!inputValue.trim() || !config.baseUrl || !config.apiKey}
+              disabled={!inputValue.trim() || !config.baseUrl || !config.apiKey || !config.model}
               className={styles.sendBtn}
             >
               发送
