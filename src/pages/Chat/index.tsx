@@ -3,11 +3,11 @@
  * @message: AI 聊天页面 - 支持自定义 BaseURL 和 APIKey
  * @since: 2026-03-03
  * @LastAuthor: panan panan2001@outlook.com
- * @lastTime: 2026-03-03 15:00:00
+ * @lastTime: 2026-03-03 16:00:00
  * @文件相对于项目的路径: /pan-umi/src/pages/Chat/index.tsx
  */
 import { useEffect, useRef, useState } from 'react';
-import { Input, Button, Space, Drawer, Form, message, Spin, Empty } from 'antd';
+import { Input, Button, Space, Drawer, Form, message, Spin, Empty, Alert } from 'antd';
 import { SendOutlined, SettingOutlined } from '@ant-design/icons';
 import styles from './index.less';
 import { getChatResponse } from './services/chatService';
@@ -37,6 +37,7 @@ const ChatPage: React.FC = () => {
     baseUrl: '',
     apiKey: '',
   });
+  const [errorMsg, setErrorMsg] = useState<string>('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   /**
@@ -82,6 +83,7 @@ const ChatPage: React.FC = () => {
     setMessages((prev) => [...prev, userMessage]);
     setInputValue('');
     setLoading(true);
+    setErrorMsg('');
 
     try {
       // 调用 API 获取响应
@@ -102,9 +104,12 @@ const ChatPage: React.FC = () => {
 
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
-      message.error(
-        error instanceof Error ? error.message : '获取响应失败，请检查配置'
-      );
+      const errorText = error instanceof Error ? error.message : '获取响应失败，请检查配置';
+      setErrorMsg(errorText);
+      message.error(errorText);
+      
+      // 移除用户消息（因为请求失败）
+      setMessages((prev) => prev.slice(0, -1));
     } finally {
       setLoading(false);
     }
@@ -117,6 +122,7 @@ const ChatPage: React.FC = () => {
     setConfig({ baseUrl, apiKey });
     setStorageConfig({ baseUrl, apiKey });
     setConfigVisible(false);
+    setErrorMsg('');
     message.success('配置已保存');
   };
 
@@ -125,6 +131,7 @@ const ChatPage: React.FC = () => {
    */
   const handleClearChat = () => {
     setMessages([]);
+    setErrorMsg('');
     message.success('聊天记录已清空');
   };
 
@@ -148,14 +155,27 @@ const ChatPage: React.FC = () => {
           icon={<SettingOutlined />}
           onClick={() => setConfigVisible(true)}
           className={styles.settingBtn}
+          title="配置 API"
         />
       </div>
+
+      {/* 错误提示 */}
+      {errorMsg && (
+        <Alert
+          message="错误"
+          description={errorMsg}
+          type="error"
+          closable
+          onClose={() => setErrorMsg('')}
+          style={{ margin: '12px 24px 0' }}
+        />
+      )}
 
       {/* 消息列表区域 */}
       <div className={styles.messagesArea}>
         {messages.length === 0 ? (
           <Empty
-            description="开始一段对话吧"
+            description={config.baseUrl && config.apiKey ? '开始一段对话吧' : '请先配置 API 信息'}
             style={{ marginTop: '100px' }}
           />
         ) : (
@@ -180,9 +200,13 @@ const ChatPage: React.FC = () => {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="输入消息（Shift + Enter 换行，Enter 发送）"
+            placeholder={
+              config.baseUrl && config.apiKey
+                ? '输入消息（Shift + Enter 换行，Enter 发送）'
+                : '请先配置 API 信息'
+            }
             rows={3}
-            disabled={loading}
+            disabled={loading || !config.baseUrl || !config.apiKey}
             className={styles.input}
           />
         </Space.Compact>
@@ -193,13 +217,20 @@ const ChatPage: React.FC = () => {
               icon={<SendOutlined />}
               onClick={handleSendMessage}
               loading={loading}
-              disabled={!inputValue.trim()}
+              disabled={!inputValue.trim() || !config.baseUrl || !config.apiKey}
               className={styles.sendBtn}
             >
               发送
             </Button>
             <Button onClick={handleClearChat} disabled={messages.length === 0}>
               清空
+            </Button>
+            <Button
+              type="dashed"
+              onClick={() => setConfigVisible(true)}
+              disabled={loading}
+            >
+              配置 API
             </Button>
           </Space>
         </div>

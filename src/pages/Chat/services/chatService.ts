@@ -3,7 +3,7 @@
  * @message: 聊天服务 - 处理 API 请求
  * @since: 2026-03-03
  * @LastAuthor: panan panan2001@outlook.com
- * @lastTime: 2026-03-03 15:00:00
+ * @lastTime: 2026-03-03 16:00:00
  * @文件相对于项目的路径: /pan-umi/src/pages/Chat/services/chatService.ts
  */
 
@@ -26,6 +26,26 @@ interface APIMessage {
 }
 
 /**
+ * 规范化 Base URL
+ * 移除末尾斜杠，确保路径正确
+ */
+const normalizeBaseUrl = (baseUrl: string): string => {
+  let normalized = baseUrl.trim();
+  
+  // 移除末尾的斜杠
+  if (normalized.endsWith('/')) {
+    normalized = normalized.slice(0, -1);
+  }
+  
+  // 如果没有 /v1 后缀，添加它
+  if (!normalized.endsWith('/v1')) {
+    normalized = `${normalized}/v1`;
+  }
+  
+  return normalized;
+};
+
+/**
  * 获取聊天响应
  * @param userMessage 用户消息
  * @param messages 历史消息列表
@@ -40,6 +60,10 @@ export const getChatResponse = async (
   apiKey: string
 ): Promise<string> => {
   try {
+    // 规范化 Base URL
+    const normalizedBaseUrl = normalizeBaseUrl(baseUrl);
+    const apiUrl = `${normalizedBaseUrl}/chat/completions`;
+
     // 构建消息列表
     const messageList: APIMessage[] = messages.map((msg) => ({
       role: msg.role,
@@ -52,8 +76,11 @@ export const getChatResponse = async (
       content: userMessage,
     });
 
+    console.log('API Request URL:', apiUrl);
+    console.log('Messages:', messageList);
+
     // 调用 API
-    const response = await fetch(`${baseUrl}/chat/completions`, {
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -70,14 +97,24 @@ export const getChatResponse = async (
       }),
     });
 
+    // 获取响应文本用于调试
+    const responseText = await response.text();
+    console.log('API Response Status:', response.status);
+    console.log('API Response Text:', responseText);
+
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(
-        errorData.error?.message || `API 请求失败: ${response.status}`
-      );
+      try {
+        const errorData = JSON.parse(responseText);
+        const errorMsg = errorData.error?.message || errorData.msg || `API 请求失败: ${response.status}`;
+        throw new Error(errorMsg);
+      } catch (parseError) {
+        throw new Error(
+          `API 请求失败 (${response.status}): ${responseText || '无响应内容'}`
+        );
+      }
     }
 
-    const data = await response.json();
+    const data = JSON.parse(responseText);
 
     // 提取响应内容
     const assistantMessage =
@@ -101,17 +138,31 @@ export const getChatResponse = async (
 export const validateApiConfig = async (
   baseUrl: string,
   apiKey: string
-): Promise<boolean> => {
+): Promise<{ valid: boolean; message: string }> => {
   try {
-    const response = await fetch(`${baseUrl}/models`, {
+    const normalizedBaseUrl = normalizeBaseUrl(baseUrl);
+    const modelsUrl = `${normalizedBaseUrl}/models`;
+
+    const response = await fetch(modelsUrl, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${apiKey}`,
       },
     });
 
-    return response.ok;
+    if (response.ok) {
+      return { valid: true, message: 'API 配置有效' };
+    } else {
+      const text = await response.text();
+      return {
+        valid: false,
+        message: `API 验证失败 (${response.status}): ${text}`,
+      };
+    }
   } catch (error) {
-    return false;
+    return {
+      valid: false,
+      message: `连接失败: ${error instanceof Error ? error.message : '未知错误'}`,
+    };
   }
 };
