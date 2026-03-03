@@ -1,0 +1,54 @@
+/* src/components/NameCardList.less */
+.cardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: flex-start;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card {
+  flex: 1 1 300px; /* Basis of 200px, allowing cards to grow and shrink */
+  min-width: 300px; /* Minimum width of 200px */
+  max-width: 300px; /* Ensuring 3 cards per row at most */
+  height: 100px;
+  box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+}
+
+.cardContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 100%; /* Ensure the content fills the card */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cardContent:hover {
+  transform: translateY(-10px);
+}
+
+.cardName {
+  margin: auto;
+  position: relative;
+  font-size: 16px;
+  color: #000000;
+  z-index: 1;
+}
+
+.cardName::before {
+  content: '';
+  position: absolute;
+  top: -10px; /* Adjust to center the background around the text */
+  bottom: -10px;
+  left: -20px;
+  right: -20px;
+  background: rgba(255, 255, 255, 0.8); /* Glass effect background */
+  backdrop-filter: blur(20px); /* Apply blur for glass effect */
+  border-radius: 10px; /* Optional: Add some border radius for a smoother look */
+  z-index: -1;
+}

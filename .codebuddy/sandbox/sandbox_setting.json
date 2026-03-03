@@ -1,0 +1,20 @@
+{
+  "path": "/Users/panan/潘安/代码/react/pan-umi/dist",
+  "desc": "这是一个基于 UmiJS 的 React 前端项目，包含了多个页面和组件，如手动评估、模型列表、存储组件等功能。",
+  "id": "e8093a6a3ab8482eaf623a090a955590",
+  "data": {
+    "spaceKey": "e8093a6a3ab8482eaf623a090a955590",
+    "connections": {
+      "webIDE": "https://e8093a6a3ab8482eaf623a090a955590.ap-singapore.cloudstudio.club",
+      "preview": "https://e8093a6a3ab8482eaf623a090a955590--{port}.ap-singapore.cloudstudio.club",
+      "api": "https://e8093a6a3ab8482eaf623a090a955590--api.ap-singapore.cloudstudio.club",
+      "pty": "https://e8093a6a3ab8482eaf623a090a955590--pty.ap-singapore.cloudstudio.club"
+    }
+  },
+  "config": {
+    "api": "https://e8093a6a3ab8482eaf623a090a955590--api.ap-singapore.cloudstudio.club",
+    "pty": "https://e8093a6a3ab8482eaf623a090a955590--pty.ap-singapore.cloudstudio.club",
+    "region": "ap-shanghai",
+    "spaceKey": "e8093a6a3ab8482eaf623a090a955590"
+  }
+}

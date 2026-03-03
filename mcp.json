@@ -1,0 +1,35 @@
+// 提示：不要在仓库中保存密钥；请通过系统环境变量注入（例如在 shell 配置中 export），本文件不覆盖系统环境变量。
+{
+  "GitHub": {
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-github"],
+    "env": {},
+    "fromGalleryId": "modelcontextprotocol.servers_github"
+  },
+  "context7": {
+    "command": "npx",
+    "args": ["-y", "@upstash/context7-mcp@latest"],
+    "env": {
+      "DEFAULT_MINIMUM_TOKENS": "10000"
+    },
+    "fromGalleryId": "upstash.context7"
+  },
+  "Playwright": {
+    "command": "npx",
+    "args": ["-y", "@executeautomation/playwright-mcp-server"],
+    "env": {},
+    "fromGalleryId": "executeautomation.mcp-playwright"
+  },
+  "File System": {
+    "command": "npx -y @bunas/fs-mcp@latest",
+    "args": [],
+    "env": {},
+    "fromGalleryId": "bunasQ.fs"
+  },
+  "Sequential Thinking": {
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+    "env": {},
+    "fromGalleryId": "modelcontextprotocol.servers_sequentialthinking"
+  }
+}

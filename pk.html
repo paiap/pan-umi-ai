@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>第二届羽笙杯 · 对阵表</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0b1220;
+        --panel: #0f172a;
+        --muted: #94a3b8;
+        --text: #e2e8f0;
+        --accent: #60a5fa;
+        --accent-2: #34d399;
+        --chip: #1f2937;
+        --ring: rgba(96, 165, 250, 0.35);
+        --card: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.04),
+          rgba(255, 255, 255, 0.02)
+        );
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto,
+          'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue',
+          Arial, 'Noto Sans SC', sans-serif;
+        color: var(--text);
+        background: radial-gradient(
+            1200px 600px at 10% 0%,
+            rgba(56, 189, 248, 0.08),
+            rgba(56, 189, 248, 0) 60%
+          ),
+          radial-gradient(
+            900px 600px at 90% 0%,
+            rgba(147, 197, 253, 0.08),
+            rgba(147, 197, 253, 0) 60%
+          ),
+          var(--bg);
+      }
+      .wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 16px;
+      }
+      @media (min-width: 768px) {
+        .wrap {
+          padding: 24px;
+        }
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        backdrop-filter: blur(10px);
+        background: linear-gradient(
+          180deg,
+          rgba(15, 23, 42, 0.85),
+          rgba(15, 23, 42, 0.65)
+        );
+        border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+      }
+      .head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 8px 16px;
+        min-height: 60px;
+      }
+      @media (min-width: 768px) {
+        .head {
+          padding: 10px 24px;
+          gap: 12px;
+          min-height: 64px;
+        }
+      }
+      .branding {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .logo {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        font-size: 14px;
+        background: conic-gradient(from 120deg, #60a5fa, #34d399, #60a5fa);
+        color: #0b1220;
+        box-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
+      }
+      h1 {
+        font-size: 16px;
+        margin: 0;
+        letter-spacing: 0.3px;
+        line-height: 1.2;
+      }
+      @media (min-width: 768px) {
+        .branding {
+          gap: 10px;
+        }
+        .logo {
+          width: 36px;
+          height: 36px;
+          font-size: 16px;
+        }
+        h1 {
+          font-size: 18px;
+        }
+      }
+      .sub {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 1px;
+        opacity: 0.8;
+      }
+      .tools {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: center;
+      }
+      .tool {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 6px 8px;
+        border-radius: 8px;
+        background: #0b1220;
+        color: var(--text);
+        border: 1px solid rgba(148, 163, 184, 0.15);
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset;
+        font-size: 13px;
+        white-space: nowrap;
+      }
+      .tool svg {
+        width: 14px;
+        height: 14px;
+      }
+      @media (min-width: 768px) {
+        .tools {
+          gap: 8px;
+        }
+        .tool {
+          padding: 7px 10px;
+          border-radius: 10px;
+          gap: 6px;
+          font-size: 14px;
+        }
+        .tool svg {
+          width: 16px;
+          height: 16px;
+        }
+      }
+      .tool input[type='file'] {
+        display: none;
+      }
+      .btn {
+        cursor: pointer;
+        border: none;
+        background: var(--panel);
+        color: var(--text);
+        padding: 6px 10px;
+        border-radius: 8px;
+        border: 1px solid rgba(148, 163, 184, 0.15);
+        font-size: 13px;
+        min-height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+      }
+      @media (min-width: 768px) {
+        .btn {
+          padding: 7px 12px;
+          border-radius: 10px;
+          font-size: 14px;
+          min-height: 38px;
+        }
+      }
+      .btn.primary {
+        background: linear-gradient(180deg, #1d4ed8, #1e40af);
+        border-color: #1d4ed8;
+      }
+      .btn.ghost {
+        background: transparent;
+      }
+      .filters {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      select,
+      input[type='search'] {
+        background: #0b1220;
+        color: var(--text);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 12px;
+        padding: 12px;
+        outline: none;
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+        font-size: 16px;
+        min-height: 44px;
+      }
+      @media (min-width: 768px) {
+        .filters {
+          flex-direction: row;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+        .btn {
+          font-size: inherit;
+          min-height: auto;
+        }
+        select,
+        input[type='search'] {
+          padding: 10px 12px;
+          font-size: inherit;
+          min-height: auto;
+        }
+      }
+      select:focus,
+      input[type='search']:focus {
+        box-shadow: 0 0 0 3px var(--ring);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-top: 16px;
+      }
+      @media (min-width: 900px) {
+        .grid {
+          grid-template-columns: 380px 1fr;
+          margin-top: 20px;
+        }
+      }
+
+      .panel {
+        background: var(--panel);
+        border: 1px solid rgba(148, 163, 184, 0.15);
+        border-radius: 16px;
+        padding: 16px;
+      }
+      @media (max-width: 767px) {
+        .panel {
+          padding: 12px;
+        }
+      }
+      .panel h2 {
+        margin: 0 0 12px 0;
+        font-size: 16px;
+        color: #cbd5e1;
+      }
+
+      /* Match cards */
+      .cards {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      @media (min-width: 480px) {
+        .cards {
+          grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        }
+      }
+      .card {
+        border-radius: 12px;
+        padding: 8px 10px;
+        border: 1px solid rgba(148, 163, 184, 0.15);
+        background: linear-gradient(
+          145deg,
+          rgba(31, 41, 55, 0.8),
+          rgba(17, 24, 39, 0.6)
+        );
+        backdrop-filter: blur(6px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.13),
+          inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        position: relative;
+        overflow: hidden;
+        min-height: 0;
+        max-height: 120px;
+      }
+      .card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          var(--accent),
+          var(--accent-2),
+          var(--accent)
+        );
+        opacity: 0.6;
+      }
+      .card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        padding-bottom: 4px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+      }
+      .round-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .round-name {
+        font-size: 11px;
+        color: #94a3b8;
+        font-weight: 500;
+      }
+      .match-name {
+        font-size: 12px;
+        color: var(--text);
+        font-weight: 600;
+      }
+      .match-type {
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        color: #0b1220;
+        padding: 2px 6px;
+        border-radius: 12px;
+        font-size: 10px;
+        font-weight: 700;
+        box-shadow: 0 2px 6px rgba(96, 165, 250, 0.18);
+      }
+      .matchup {
+        display: flex;
+        align-items: stretch;
+        gap: 0;
+        position: relative;
+        height: 60px;
+      }
+      .matchup::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 16px;
+        right: 16px;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--accent),
+          transparent
+        );
+        transform: translateY(-50%);
+        opacity: 0.3;
+      }
+      .team-section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+        padding: 6px 8px;
+        border-radius: 6px;
+        background: rgba(15, 23, 42, 0.4);
+        border: 1px solid rgba(148, 163, 184, 0.06);
+        backdrop-filter: blur(2px);
+        height: 100%;
+      }
+      .team-section.team-a {
+        border-left: 3px solid var(--accent);
+      }
+      .team-section.team-b {
+        border-left: 3px solid var(--accent-2);
+      }
+      .vs-divider {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+      }
+      .vs-text {
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        color: #0b1220;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 10px;
+        box-shadow: 0 1px 4px rgba(96, 165, 250, 0.13),
+          0 0 5px rgba(96, 165, 250, 0.08);
+      }
+      .player-chips {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 3px;
+        width: 100%;
+        flex-direction: column !important;
+      }
+      .player-chip {
+        background: linear-gradient(
+          135deg,
+          rgba(96, 165, 250, 0.1),
+          rgba(52, 211, 153, 0.1)
+        );
+        color: var(--text);
+        padding: 4px 8px;
+        border-radius: 8px;
+        border: 1px solid rgba(148, 163, 184, 0.1);
+        font-size: 11px;
+        font-weight: 500;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+        transition: all 0.15s ease;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100% !important;
+        display: block !important;
+      }
+      .player-number {
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      /* 强制两行布局 */
+      .team-section .player-chips {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 3px !important;
+      }
+
+      .team-section .player-chip {
+        width: 100% !important;
+        margin: 0 !important;
+      }
+
+      @media (min-width: 480px) {
+        .card {
+          padding: 10px 12px;
+        }
+        .player-chip {
+          font-size: 11px;
+          padding: 4px 8px;
+        }
+        /* 确保大屏幕上也是两行 */
+        .team-section .player-chips {
+          display: flex !important;
+          flex-direction: column !important;
+          gap: 3px !important;
+        }
+      }
+
+      /* Table */
+      .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 12px;
+        border: 1px solid rgba(148, 163, 184, 0.15);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 600px;
+      }
+      thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background: #0b1220;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      }
+      th,
+      td {
+        padding: 12px 10px;
+        text-align: left;
+        border-bottom: 1px dashed rgba(148, 163, 184, 0.15);
+      }
+      @media (max-width: 767px) {
+        th,
+        td {
+          padding: 10px 8px;
+          font-size: 14px;
+        }
+        thead th {
+          font-size: 12px;
+        }
+      }
+      tbody tr:hover {
+        background: rgba(148, 163, 184, 0.06);
+      }
+      .tag {
+        font-size: 12px;
+        color: #93c5fd;
+        background: rgba(96, 165, 250, 0.12);
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(96, 165, 250, 0.25);
+      }
+
+      .footer {
+        color: var(--muted);
+        text-align: center;
+        padding: 24px 12px;
+      }
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="head wrap">
+        <div class="branding">
+          <div class="logo">羽</div>
+          <div>
+            <h1>第二届羽笙杯</h1>
+            <div class="sub">对阵表 · 每轮 3 场，共 48 场</div>
+          </div>
+        </div>
+        <div class="tools">
+          <label class="tool" title="导入CSV（列：轮次,场次,组合A,组合B）">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 16V4"
+                stroke="#93c5fd"
+                stroke-width="1.6"
+                stroke-linecap="round"
+              />
+              <path
+                d="M8 8l4-4 4 4"
+                stroke="#93c5fd"
+                stroke-width="1.6"
+                stroke-linecap="round"
+              />
+              <rect
+                x="3"
+                y="12"
+                width="18"
+                height="8"
+                rx="2"
+                stroke="#93c5fd"
+                stroke-width="1.6"
+              />
+            </svg>
+            <span>导入 CSV</span>
+            <input id="file-input" type="file" accept=".csv,.txt" />
+          </label>
+          <button id="download" class="btn">下载当前视图 CSV</button>
+          <button id="toggle-view" class="btn">切换：卡片/表格</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <div class="grid">
+        <section class="panel">
+          <h2>筛选</h2>
+          <div class="filters">
+            <select id="round-select"></select>
+            <input id="search" type="search" placeholder="搜索选手或编号…" />
+            <button id="reset" class="btn ghost">重置</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>对阵展示 <span id="count" class="tag">0 场</span></h2>
+          <div id="cards" class="cards"></div>
+          <div id="table" class="hidden">
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>轮次</th>
+                    <th>场次</th>
+                    <th>组合A</th>
+                    <th>组合B</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <div class="footer">© 第二届羽笙杯 · 单页离线可用 · 支持导入CSV</div>
+
+    <script>
+      // ————————————————————————————
+      // 默认赛程（可直接使用）。如需以你最终CSV为准，点击“导入 CSV”。
+      // 列结构：轮次, 场次, 组合A, 组合B
+      // 数据来自你确认的最终对战表（每轮3场，共48场）。
+      // ————————————————————————————
+      const DEFAULT_ROWS = [
+        // ['第1轮', '场地一', '8号小欧 / 20号鱼', '11号leo / 17号Nabby_'],
+        ['第1轮', '场地一', '8号小欧 / 24号桃子', '11号leo / 7号蒋老师'],
+        ['第1轮', '场地二', '18号牛羽晏 / 16号果子', '9号Julio / 2号laby'],
+        ['第1轮', '场地三', '6号李策珏 / 14号Re.', '1号Boh / 4号爱笑'],
+        ['第2轮', '场地一', '21号HL / 4号爱笑', '18号牛羽晏 / 7号蒋老师'],
+        ['第2轮', '场地二', '19号苹果 / 2号laby', '22号Q / 24号桃子'],
+        ['第2轮', '场地三', '15号熊 / 20号鱼', '6号李策珏 / 17号Nabby_'],
+        ['第3轮', '场地一', '8号小欧 / 20号鱼', '11号leo / 17号Nabby_'],
+        ['第3轮', '场地二', '3号义笙 / 16号果子', '23号小韩 / 10号团扇'],
+        ['第3轮', '场地三', '6号李策珏 / 13号小类子', '1号Boh / 5号炼云'],
+        ['第4轮', '场地一', '19号苹果 / 24号桃子', '23号小韩 / 14号Re.'],
+        ['第4轮', '场地二', '22号Q / 7号蒋老师', '3号义笙 / 12号尔日'],
+        ['第4轮', '场地三', '15号熊 / 4号爱笑', '11号leo / 2号laby'],
+        ['第5轮', '场地一', '18号牛羽晏 / 14号Re.', '11号leo / 10号团扇'],
+        ['第5轮', '场地二', '21号HL / 13号小类子', '3号义笙 / 7号蒋老师'],
+        ['第5轮', '场地三', '8号小欧 / 17号Nabby_', '9号Julio / 12号尔日'],
+        ['第6轮', '场地一', '22号Q / 5号炼云', '21号HL / 24号桃子'],
+        ['第6轮', '场地二', '19号苹果 / 20号鱼', '8号小欧 / 10号团扇'],
+        ['第6轮', '场地三', '1号Boh / 13号小类子', '18号牛羽晏 / 12号尔日'],
+        ['第7轮', '场地一', '19号苹果 / 16号果子', '23号小韩 / 12号尔日'],
+        ['第7轮', '场地二', '15号熊 / 5号炼云', '9号Julio / 4号爱笑'],
+        ['第7轮', '场地三', '21号HL / 14号Re.', '6号李策珏 / 2号laby'],
+        ['第8轮', '场地一', '23号小韩 / 2号laby', '21号HL / 17号Nabby_'],
+        ['第8轮', '场地二', '9号Julio / 16号果子', '22号Q / 13号小类子'],
+        ['第8轮', '场地三', '3号义笙 / 5号炼云', '15号熊 / 10号团扇'],
+        ['第9轮', '场地一', '9号Julio / 13号小类子', '1号Boh / 14号Re.'],
+        ['第9轮', '场地二', '23号小韩 / 24号桃子', '3号义笙 / 20号鱼'],
+        ['第9轮', '场地三', '6号李策珏 / 12号尔日', '18号牛羽晏 / 10号团扇'],
+        ['第10轮', '场地一', '22号Q / 2号laby', '1号Boh / 12号尔日'],
+        ['第10轮', '场地二', '15号熊 / 14号Re.', '8号小欧 / 4号爱笑'],
+        ['第10轮', '场地三', '6号李策珏 / 20号鱼', '19号苹果 / 5号炼云'],
+        ['第11轮', '场地一', '19号苹果 / 13号小类子', '21号HL / 7号蒋老师'],
+        ['第11轮', '场地二', '6号李策珏 / 5号炼云', '3号义笙 / 17号Nabby_'],
+        ['第11轮', '场地三', '1号Boh / 24号桃子', '22号Q / 16号果子'],
+        ['第12轮', '场地一', '15号熊 / 7号蒋老师', '11号leo / 20号鱼'],
+        ['第12轮', '场地二', '19号苹果 / 10号团扇', '9号Julio / 24号桃子'],
+        ['第12轮', '场地三', '23号小韩 / 4号爱笑', '8号小欧 / 13号小类子'],
+        ['第13轮', '场地一', '3号义笙 / 24号桃子', '21号HL / 20号鱼'],
+        ['第13轮', '场地二', '18号牛羽晏 / 5号炼云', '9号Julio / 14号Re.'],
+        ['第13轮', '场地三', '8号小欧 / 7号蒋老师', '22号Q / 10号团扇'],
+        ['第14轮', '场地一', '21号HL / 16号果子', '15号熊 / 12号尔日'],
+        ['第14轮', '场地二', '11号leo / 14号Re.', '1号Boh / 2号laby'],
+        ['第14轮', '场地三', '23号小韩 / 13号小类子', '9号Julio / 10号团扇'],
+        ['第15轮', '场地一', '6号李策珏 / 16号果子', '3号义笙 / 4号爱笑'],
+        ['第15轮', '场地二', '15号熊 / 2号laby', '1号Boh / 17号Nabby_'],
+        ['第15轮', '场地三', '8号小欧 / 12号尔日', '11号leo / 5号炼云'],
+        ['第16轮', '场地一', '19号苹果 / 7号蒋老师', '18号牛羽晏 / 4号爱笑'],
+        ['第16轮', '场地二', '22号Q / 17号Nabby_', '11号leo / 16号果子'],
+        ['第16轮', '场地三', '23号小韩 / 17号Nabby_', '18号牛羽晏 / 20号鱼'],
+      ];
+
+      // ——— 状态 & DOM ———
+      const $round = document.getElementById('round-select');
+      const $search = document.getElementById('search');
+      const $reset = document.getElementById('reset');
+      const $cards = document.getElementById('cards');
+      const $table = document.getElementById('table');
+      const $tbody = document.getElementById('tbody');
+      const $count = document.getElementById('count');
+      const $toggle = document.getElementById('toggle-view');
+      const $file = document.getElementById('file-input');
+      const $download = document.getElementById('download');
+
+      let rows = DEFAULT_ROWS.slice();
+      let view = 'cards'; // 'cards' | 'table'
+
+      function unique(arr) {
+        return Array.from(new Set(arr));
+      }
+
+      function parseCSV(text) {
+        const lines = text.split(/\r?\n/).filter(Boolean);
+        const out = [];
+        for (const line of lines) {
+          if (!line.includes(',')) continue;
+          const parts = line.split(',').map((s) => s.trim());
+          if (parts[0].startsWith('第') || parts[0] === '轮次') {
+            // skip header or keep data
+            if (parts[0] === '轮次') continue;
+            if (parts.length >= 4)
+              out.push([parts[0], parts[1], parts[2], parts[3]]);
+          }
+        }
+        return out;
+      }
+
+      function renderFilters() {
+        const rounds = unique(rows.map((r) => r[0])).sort((a, b) => {
+          const na = parseInt(a.replace(/\D/g, ''), 10);
+          const nb = parseInt(b.replace(/\D/g, ''), 10);
+          return na - nb;
+        });
+        $round.innerHTML = ['<option value="all">全部轮次</option>']
+          .concat(rounds.map((r) => `<option value="${r}">${r}</option>`))
+          .join('');
+      }
+
+      function matchKeyword(r, kw) {
+        if (!kw) return true;
+        const line = r.join(' ').toLowerCase();
+        return line.includes(kw.toLowerCase());
+      }
+
+      function filterRows() {
+        const sel = $round.value;
+        const kw = $search.value.trim();
+        let data = rows.slice();
+        if (sel !== 'all') data = data.filter((r) => r[0] === sel);
+        if (kw) data = data.filter((r) => matchKeyword(r, kw));
+        return data;
+      }
+
+      function renderCards(data) {
+        $cards.innerHTML = data
+          .map(([round, match, a, b]) => {
+            const [a1, a2] = a.split('/').map((s) => s.trim());
+            const [b1, b2] = b.split('/').map((s) => s.trim());
+
+            // Extract player numbers for highlighting
+            const getHighlightedName = (name) => {
+              const match = name.match(/(\d+)号(.*)/);
+              if (match) {
+                return `<span class="player-number">${match[1]}号</span>${match[2]}`;
+              }
+              return name;
+            };
+
+            return `<div class="card">
+          <div class="card-head">
+            <div class="round-info">
+              <div class="round-name">${round}</div>
+              <div class="match-name">${match}</div>
+            </div>
+            <div class="match-type">双打</div>
+          </div>
+          <div class="matchup">
+            <div class="team-section team-a">
+              <div class="player-chips">
+                <div class="player-chip">${getHighlightedName(a1)}</div>
+                <div class="player-chip">${getHighlightedName(a2)}</div>
+              </div>
+            </div>
+            <div class="vs-divider">
+              <div class="vs-text">VS</div>
+            </div>
+            <div class="team-section team-b">
+              <div class="player-chips">
+                <div class="player-chip">${getHighlightedName(b1)}</div>
+                <div class="player-chip">${getHighlightedName(b2)}</div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+          })
+          .join('');
+      }
+
+      function renderTable(data) {
+        $tbody.innerHTML = data
+          .map(
+            ([r, m, a, b]) =>
+              `<tr><td>${r}</td><td>${m}</td><td>${a}</td><td>${b}</td></tr>`,
+          )
+          .join('');
+      }
+
+      function render() {
+        const data = filterRows();
+        $count.textContent = `${data.length} 场`;
+        if (view === 'cards') {
+          $cards.classList.remove('hidden');
+          $table.classList.add('hidden');
+          renderCards(data);
+        } else {
+          $cards.classList.add('hidden');
+          $table.classList.remove('hidden');
+          renderTable(data);
+        }
+      }
+
+      // 事件
+      $round.addEventListener('change', render);
+      $search.addEventListener('input', render);
+      $reset.addEventListener('click', () => {
+        $round.value = 'all';
+        $search.value = '';
+        render();
+      });
+      $toggle.addEventListener('click', () => {
+        view = view === 'cards' ? 'table' : 'cards';
+        render();
+      });
+
+      $file.addEventListener('change', async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const text = await file.text();
+        const parsed = parseCSV(text);
+        if (parsed.length) {
+          rows = parsed;
+          renderFilters();
+          render();
+        } else alert('未识别到有效数据（需要列：轮次,场次,组合A,组合B）');
+      });
+
+      $download.addEventListener('click', () => {
+        const data = filterRows();
+        const header = '轮次,场次,组合A,组合B\n';
+        const body = data
+          .map((r) => r.map((v) => `"${v.replace(/"/g, '""')}"`).join(','))
+          .join('\n');
+        const blob = new Blob([header + body], {
+          type: 'text/csv;charset=utf-8;',
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = '第二届羽笙杯_当前视图.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+
+      // 初始化
+      renderFilters();
+      render();
+    </script>
+  </body>
+</html>

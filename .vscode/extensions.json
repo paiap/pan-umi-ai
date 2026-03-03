@@ -1,0 +1,19 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "stylelint.vscode-stylelint",
+    "bradlc.vscode-tailwindcss",
+    "ms-vscode.vscode-typescript-next",
+    "formulahendry.auto-rename-tag",
+    "christian-kohler.path-intellisense",
+    "ms-vscode.vscode-json",
+    "deepscan.vscode-deepscan",
+    "antfu.unocss",
+    "lokalise.i18n-ally",
+    "ms-vscode.vscode-npm-script",
+    "gruntfuggly.todo-tree",
+    "usernamehw.errorlens",
+    "bradlc.vscode-tailwindcss"
+  ]
+}

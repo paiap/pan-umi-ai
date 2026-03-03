@@ -1,0 +1,9 @@
+---
+description: 
+globs:
+alwaysApply: true
+---
+# my-rule
+special rules【可以放入项目rules中】
+1. 所有的接口返回结构为`{code:0,msg:'成功',data:{} | []}`,data中是真实返回的数据
+2. 在写组件时候，保证与其相关的所有页面和小组件都在该文件夹内「包括后面提及的文件夹，全部都是当亲组件所在文件夹内」，通用小组件放入components文件夹中，子页面放入pages文件夹中，工具函数放入utils文件夹中，接口函数放入api文件夹中「可以根据功能不同在api文件夹中创建不同文件」，mock数据放在mock文件夹中「api文件夹中引用即可」
