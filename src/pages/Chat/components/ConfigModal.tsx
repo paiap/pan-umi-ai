@@ -3,7 +3,7 @@
  * @message: API 配置模态框组件
  * @since: 2026-03-03
  * @LastAuthor: panan panan2001@outlook.com
- * @lastTime: 2026-03-03 15:00:00
+ * @lastTime: 2026-03-03 16:30:00
  * @文件相对于项目的路径: /pan-umi/src/pages/Chat/components/ConfigModal.tsx
  */
 import { Modal, Form, Input, Button, Space, message, Alert } from 'antd';
@@ -59,11 +59,11 @@ const ConfigModal: React.FC<ConfigModalProps> = ({
       onCancel={onClose}
       footer={null}
       className={styles.configModal}
-      width={500}
+      width={550}
     >
       <Alert
-        message="提示"
-        description="请输入您的 OpenAI 兼容 API 的 Base URL 和 API Key。支持 Claude Code 标准 API 格式。"
+        message="支持多种 API 格式"
+        description="支持 OpenAI、Claude Code、智谱清言等所有兼容 Claude API 的服务。请输入您的完整 Base URL 和 API Key。"
         type="info"
         showIcon
         style={{ marginBottom: 16 }}
@@ -85,10 +85,10 @@ const ConfigModal: React.FC<ConfigModalProps> = ({
               message: '请输入有效的 URL（以 http:// 或 https:// 开头）',
             },
           ]}
-          tooltip="例如：https://api.openai.com/v1 或其他兼容 API 的地址"
+          tooltip="输入完整的 API 地址，系统会自动识别并处理"
         >
           <Input
-            placeholder="https://api.openai.com/v1"
+            placeholder="https://open.bigmodel.cn/api/anthropic"
             className={styles.input}
           />
         </Form.Item>
@@ -98,12 +98,12 @@ const ConfigModal: React.FC<ConfigModalProps> = ({
           name="apiKey"
           rules={[
             { required: true, message: '请输入 API Key' },
-            { min: 10, message: 'API Key 长度不足' },
+            { min: 5, message: 'API Key 长度不足' },
           ]}
-          tooltip="您的 OpenAI API Key 或其他兼容 API 的密钥"
+          tooltip="您的 API 密钥，将安全地存储在本地"
         >
           <Input.Password
-            placeholder="sk-..."
+            placeholder="输入您的 API Key"
             className={styles.input}
           />
         </Form.Item>
@@ -119,18 +119,24 @@ const ConfigModal: React.FC<ConfigModalProps> = ({
       </Form>
 
       <div className={styles.tips}>
-        <h4>常见 API 地址：</h4>
+        <h4>常见 API 地址示例：</h4>
         <ul>
           <li>
             <strong>OpenAI:</strong> https://api.openai.com/v1
           </li>
           <li>
-            <strong>Claude Code:</strong> https://api.openai.com/v1 (兼容格式)
+            <strong>智谱清言:</strong> https://open.bigmodel.cn/api/anthropic
           </li>
           <li>
-            <strong>本地模型:</strong> http://localhost:8000/v1
+            <strong>本地 Ollama:</strong> http://localhost:11434/v1
+          </li>
+          <li>
+            <strong>其他兼容服务:</strong> 输入您的完整 API 端点地址
           </li>
         </ul>
+        <p style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '8px' }}>
+          💡 提示：系统会自动识别您的 Base URL 格式，无需手动添加 /chat/completions
+        </p>
       </div>
     </Modal>
   );

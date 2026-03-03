@@ -3,7 +3,7 @@
  * @message: 聊天服务 - 处理 API 请求
  * @since: 2026-03-03
  * @LastAuthor: panan panan2001@outlook.com
- * @lastTime: 2026-03-03 16:00:00
+ * @lastTime: 2026-03-03 16:30:00
  * @文件相对于项目的路径: /pan-umi/src/pages/Chat/services/chatService.ts
  */
 
@@ -26,23 +26,41 @@ interface APIMessage {
 }
 
 /**
- * 规范化 Base URL
- * 移除末尾斜杠，确保路径正确
+ * 构建完整的 API URL
+ * 支持多种格式的 Base URL：
+ * 1. 完整路径：https://open.bigmodel.cn/api/anthropic
+ * 2. OpenAI 格式：https://api.openai.com/v1
+ * 3. 简化格式：https://api.openai.com
  */
-const normalizeBaseUrl = (baseUrl: string): string => {
-  let normalized = baseUrl.trim();
+const buildApiUrl = (baseUrl: string): string => {
+  let url = baseUrl.trim();
   
   // 移除末尾的斜杠
-  if (normalized.endsWith('/')) {
-    normalized = normalized.slice(0, -1);
+  if (url.endsWith('/')) {
+    url = url.slice(0, -1);
   }
   
-  // 如果没有 /v1 后缀，添加它
-  if (!normalized.endsWith('/v1')) {
-    normalized = `${normalized}/v1`;
+  // 如果已经包含 /chat/completions，直接返回
+  if (url.includes('/chat/completions')) {
+    return url;
   }
   
-  return normalized;
+  // 如果已经包含 /api/anthropic 或其他完整路径标志，直接返回
+  if (url.includes('/api/') && !url.endsWith('/v1')) {
+    return url;
+  }
+  
+  // 如果以 /v1 结尾，添加 /chat/completions
+  if (url.endsWith('/v1')) {
+    return `${url}/chat/completions`;
+  }
+  
+  // 如果没有 /v1，尝试添加
+  if (!url.includes('/v1')) {
+    return `${url}/v1/chat/completions`;
+  }
+  
+  return url;
 };
 
 /**
@@ -60,9 +78,8 @@ export const getChatResponse = async (
   apiKey: string
 ): Promise<string> => {
   try {
-    // 规范化 Base URL
-    const normalizedBaseUrl = normalizeBaseUrl(baseUrl);
-    const apiUrl = `${normalizedBaseUrl}/chat/completions`;
+    // 构建完整的 API URL
+    const apiUrl = buildApiUrl(baseUrl);
 
     // 构建消息列表
     const messageList: APIMessage[] = messages.map((msg) => ({
@@ -87,7 +104,7 @@ export const getChatResponse = async (
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'gpt-3.5-turbo', // 默认模型，可根据需要调整
+        model: 'claude-3-5-sonnet', // 默认使用 Claude 模型
         messages: messageList,
         temperature: 0.7,
         max_tokens: 2000,
@@ -116,9 +133,11 @@ export const getChatResponse = async (
 
     const data = JSON.parse(responseText);
 
-    // 提取响应内容
+    // 提取响应内容（支持多种响应格式）
     const assistantMessage =
-      data.choices?.[0]?.message?.content || '无法获取响应';
+      data.choices?.[0]?.message?.content ||
+      data.content?.[0]?.text ||
+      '无法获取响应';
 
     return assistantMessage;
   } catch (error) {
@@ -140,14 +159,20 @@ export const validateApiConfig = async (
   apiKey: string
 ): Promise<{ valid: boolean; message: string }> => {
   try {
-    const normalizedBaseUrl = normalizeBaseUrl(baseUrl);
-    const modelsUrl = `${normalizedBaseUrl}/models`;
-
-    const response = await fetch(modelsUrl, {
-      method: 'GET',
+    const apiUrl = buildApiUrl(baseUrl);
+    
+    // 尝试发送一个简单的测试请求
+    const response = await fetch(apiUrl, {
+      method: 'POST',
       headers: {
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${apiKey}`,
       },
+      body: JSON.stringify({
+        model: 'claude-3-5-sonnet',
+        messages: [{ role: 'user', content: 'test' }],
+        max_tokens: 10,
+      }),
     });
 
     if (response.ok) {
